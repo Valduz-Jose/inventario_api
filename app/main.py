@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app import models, schemas, database
+from datetime import datetime
+from sqlalchemy import text
 
 models.Base.metadata.create_all(bind=database.engine)
 
@@ -28,7 +30,13 @@ def create_producto(producto: schemas.ProductoCreate, db: Session = Depends(get_
 
 @app.post("/movimientos/entrada/", response_model=schemas.Movimiento)
 def create_movimiento_entrada(movimiento: schemas.MovimientoCreate, db: Session = Depends(get_db)):
-    db_movimiento = models.Movimiento(**movimiento.dict())
+    fecha_actual = datetime.now()
+    db_movimiento = models.Movimiento(
+        fecha=fecha_actual,
+        cantidad=movimiento.cantidad,
+        tipo="Salida",
+        producto_id=movimiento.producto_id
+    )
     db.add(db_movimiento)
     producto = db.query(models.Producto).filter(
         models.Producto.id == movimiento.producto_id).first()
@@ -42,27 +50,52 @@ def create_movimiento_entrada(movimiento: schemas.MovimientoCreate, db: Session 
 
 @app.post("/movimientos/entrada/sql/", response_model=schemas.Movimiento)
 def create_movimiento_entrada_sql(movimiento: schemas.MovimientoCreate, db: Session = Depends(get_db)):
-    sql = "INSERT INTO movimientos (fecha, hora, cantidad, tipo, producto_id) VALUES (:fecha, :hora, :cantidad, :tipo, :producto_id)"
-    db.execute(sql, {'fecha': movimiento.fecha, 'hora': movimiento.hora,
-               'cantidad': movimiento.cantidad, 'tipo': movimiento.tipo, 'producto_id': movimiento.producto_id})
+    fecha_actual = datetime.now()
+    sql = text("INSERT INTO movimientos (fecha, cantidad, tipo, producto_id) VALUES (:fecha, :cantidad, :tipo, :producto_id)")
+    db.execute(sql, {'fecha': fecha_actual, 'cantidad': movimiento.cantidad, 'tipo': "Entrada", 'producto_id': movimiento.producto_id})
+    
     producto = db.query(models.Producto).filter(
         models.Producto.id == movimiento.producto_id).first()
+    
     if producto:
         producto.cantidad += movimiento.cantidad
-        producto.ultimo_movimiento = movimiento.fecha
+        producto.ultimo_movimiento = fecha_actual
+    
     db.commit()
-    return movimiento
+    
+    # Obtener el movimiento recién creado para devolverlo
+    nuevo_movimiento = db.query(models.Movimiento).filter(
+        models.Movimiento.fecha == fecha_actual,
+        models.Movimiento.cantidad == movimiento.cantidad,
+        models.Movimiento.tipo == "Entrada",
+        models.Movimiento.producto_id == movimiento.producto_id
+    ).first()
+    
+    return schemas.Movimiento(
+        id=nuevo_movimiento.id,
+        fecha=nuevo_movimiento.fecha,
+        cantidad=nuevo_movimiento.cantidad,
+        tipo=nuevo_movimiento.tipo,
+        producto_id=nuevo_movimiento.producto_id
+    )
 
 
 @app.post("/movimientos/salida/", response_model=schemas.Movimiento)
 def create_movimiento_salida(movimiento: schemas.MovimientoCreate, db: Session = Depends(get_db)):
-    db_movimiento = models.Movimiento(**movimiento.dict())
+    fecha_actual = datetime.now()
+    db_movimiento = models.Movimiento(
+        fecha=fecha_actual,
+        cantidad=movimiento.cantidad,
+        tipo="Salida",
+        producto_id=movimiento.producto_id
+    )
+     
     db.add(db_movimiento)
     producto = db.query(models.Producto).filter(
         models.Producto.id == movimiento.producto_id).first()
     if producto:
         producto.cantidad -= movimiento.cantidad
-        producto.ultimo_movimiento = db_movimiento.fecha
+        producto.ultimo_movimiento = fecha_actual
     db.commit()
     db.refresh(db_movimiento)
     return db_movimiento
@@ -70,16 +103,34 @@ def create_movimiento_salida(movimiento: schemas.MovimientoCreate, db: Session =
 
 @app.post("/movimientos/salida/sql/", response_model=schemas.Movimiento)
 def create_movimiento_salida_sql(movimiento: schemas.MovimientoCreate, db: Session = Depends(get_db)):
-    sql = "INSERT INTO movimientos (fecha, hora, cantidad, tipo, producto_id) VALUES (:fecha, :hora, :cantidad, :tipo, :producto_id)"
-    db.execute(sql, {'fecha': movimiento.fecha, 'hora': movimiento.hora,
-               'cantidad': movimiento.cantidad, 'tipo': movimiento.tipo, 'producto_id': movimiento.producto_id})
+    fecha_actual = datetime.now()
+    sql = text("INSERT INTO movimientos (fecha, cantidad, tipo, producto_id) VALUES (:fecha, :cantidad, :tipo, :producto_id)")
+    db.execute(sql, {'fecha': fecha_actual, 'cantidad': movimiento.cantidad, 'tipo': "Salida", 'producto_id': movimiento.producto_id})
+    
     producto = db.query(models.Producto).filter(
         models.Producto.id == movimiento.producto_id).first()
+    
     if producto:
         producto.cantidad -= movimiento.cantidad
-        producto.ultimo_movimiento = movimiento.fecha
+        producto.ultimo_movimiento = fecha_actual
+    
     db.commit()
-    return movimiento
+    
+    # Obtener el movimiento recién creado para devolverlo
+    nuevo_movimiento = db.query(models.Movimiento).filter(
+        models.Movimiento.fecha == fecha_actual,
+        models.Movimiento.cantidad == movimiento.cantidad,
+        models.Movimiento.tipo == "Salida",
+        models.Movimiento.producto_id == movimiento.producto_id
+    ).first()
+    
+    return schemas.Movimiento(
+        id=nuevo_movimiento.id,
+        fecha=nuevo_movimiento.fecha,
+        cantidad=nuevo_movimiento.cantidad,
+        tipo=nuevo_movimiento.tipo,
+        producto_id=nuevo_movimiento.producto_id
+    )
 
 
 @app.get("/productos/{producto_id}", response_model=schemas.Producto)
@@ -91,7 +142,7 @@ def read_producto(producto_id: int, db: Session = Depends(get_db)):
     return producto
 
 
-@app.get("/productos/{producto_id}/movimientos/", response_model=schemas.Producto)
+@app.get("/productos/{producto_id}/movimientos/")
 def read_producto_movimientos(producto_id: int, db: Session = Depends(get_db)):
     producto = db.query(models.Producto).filter(
         models.Producto.id == producto_id).first()

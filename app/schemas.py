@@ -21,7 +21,6 @@ class Producto(ProductoBase):
 
 class MovimientoBase(BaseModel):
     cantidad: float
-    tipo: str
     producto_id: int
 
 
@@ -32,7 +31,7 @@ class MovimientoCreate(MovimientoBase):
 class Movimiento(MovimientoBase):
     id: int
     fecha: datetime
-    hora: datetime
+    tipo: str
 
     class Config:
         orm_mode = True
