@@ -1,0 +1,26 @@
+-como ejecutar:
+
+Navega al directorio de tu proyecto:
+
+cd inventario_api
+
+-Crea el entorno virtual:
+
+python -m venv venv
+
+-Activa el entorno virtual:
+
+venv\Scripts\activate
+
+-OJO : Instalar FastAPI y Uvicorn
+
+Con el entorno virtual activado, instala las bibliotecas necesarias:
+
+pip install fastapi uvicorn sqlalchemy sqlite
+
+-Ejecutar la Aplicación
+
+uvicorn app.main:app --reload
+
+Este comando debería iniciar el servidor en http://127.0.0.1:8000.
+

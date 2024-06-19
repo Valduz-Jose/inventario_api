@@ -17,7 +17,6 @@ class Movimiento(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     fecha = Column(DateTime, default=func.now())
-    hora = Column(DateTime, default=func.now())
     cantidad = Column(Float)
     tipo = Column(String)
     producto_id = Column(Integer)
