@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app import models, schemas, database
 from datetime import datetime
 from sqlalchemy import text
+from typing import List
 
 models.Base.metadata.create_all(bind=database.engine)
 
@@ -26,6 +27,26 @@ def create_producto(producto: schemas.ProductoCreate, db: Session = Depends(get_
     db.commit()
     db.refresh(db_producto)
     return db_producto
+
+@app.post("/productos/sql/", response_model=schemas.Producto)
+def create_producto_sql(producto: schemas.ProductoCreate, db: Session = Depends(get_db)):
+    fecha_actual = datetime.now()
+    sql= text("INSERT INTO productos (nombre, cantidad, ultimo_movimiento) VALUES (:nombre, :cantidad, :ultimo_movimiento)")
+    db.execute(sql, {"nombre": producto.nombre,"cantidad": 0,"ultimo_movimiento": fecha_actual})
+    db.commit()
+    db_producto = db.query(models.Producto).filter(
+        models.Producto.nombre == producto.nombre,
+        models.Producto.cantidad == 0,
+        models.Producto.ultimo_movimiento == fecha_actual
+    ).first()
+
+
+    return schemas.Producto(
+        id=db_producto.id,
+        nombre=db_producto.nombre,
+        cantidad=db_producto.cantidad,
+        ultimo_movimiento=db_producto.ultimo_movimiento
+    )
 
 
 @app.post("/movimientos/entrada/", response_model=schemas.Movimiento)
@@ -137,6 +158,12 @@ def create_movimiento_salida_sql(movimiento: schemas.MovimientoCreate, db: Sessi
         tipo=nuevo_movimiento.tipo,
         producto_id=nuevo_movimiento.producto_id
     )
+
+
+@app.get("/productos/", response_model=List[schemas.Producto])
+def read_productos(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+    productos = db.query(models.Producto).offset(skip).limit(limit).all()
+    return productos
 
 
 @app.get("/productos/{producto_id}", response_model=schemas.Producto)

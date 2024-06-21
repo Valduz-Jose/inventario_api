@@ -24,3 +24,8 @@ uvicorn app.main:app --reload
 
 Este comando debería iniciar el servidor en http://127.0.0.1:8000.
 
+vaciar tablas
+
+from vaciar_tablas import vaciar_tablas
+vaciar_tablas("test.db")
+

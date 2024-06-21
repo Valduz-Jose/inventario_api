@@ -16,7 +16,7 @@ class Producto(ProductoBase):
     ultimo_movimiento: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class MovimientoBase(BaseModel):
@@ -35,4 +35,4 @@ class Movimiento(MovimientoBase):
     tipo: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
