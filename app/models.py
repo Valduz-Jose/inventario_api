@@ -1,10 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, Float, Date, Time
 from sqlalchemy.sql import func
 from .database import Base
-
 from datetime import datetime
-
-
 class Producto(Base):
     __tablename__ = "productos"
 
