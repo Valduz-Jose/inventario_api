@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date, time
 from pydantic import BaseModel
 
 
@@ -30,7 +30,8 @@ class MovimientoCreate(MovimientoBase):
 
 class Movimiento(MovimientoBase):
     id: int
-    fecha: datetime
+    fecha: date
+    hora: time
     tipo: str
 
     class Config:

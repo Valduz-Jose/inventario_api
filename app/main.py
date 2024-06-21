@@ -32,7 +32,8 @@ def create_producto(producto: schemas.ProductoCreate, db: Session = Depends(get_
 def create_movimiento_entrada(movimiento: schemas.MovimientoCreate, db: Session = Depends(get_db)):
     fecha_actual = datetime.now()
     db_movimiento = models.Movimiento(
-        fecha=fecha_actual,
+        fecha=fecha_actual.date(),
+        hora=fecha_actual.time(),
         cantidad=movimiento.cantidad,
         tipo="Salida",
         producto_id=movimiento.producto_id
@@ -51,8 +52,8 @@ def create_movimiento_entrada(movimiento: schemas.MovimientoCreate, db: Session 
 @app.post("/movimientos/entrada/sql/", response_model=schemas.Movimiento)
 def create_movimiento_entrada_sql(movimiento: schemas.MovimientoCreate, db: Session = Depends(get_db)):
     fecha_actual = datetime.now()
-    sql = text("INSERT INTO movimientos (fecha, cantidad, tipo, producto_id) VALUES (:fecha, :cantidad, :tipo, :producto_id)")
-    db.execute(sql, {'fecha': fecha_actual, 'cantidad': movimiento.cantidad, 'tipo': "Entrada", 'producto_id': movimiento.producto_id})
+    sql = text("INSERT INTO movimientos (fecha, hora, cantidad, tipo, producto_id) VALUES (:fecha, :hora, :cantidad, :tipo, :producto_id)")
+    db.execute(sql, {'fecha': fecha_actual.date().isoformat(), 'hora':fecha_actual.time().isoformat() ,'cantidad': movimiento.cantidad, 'tipo': "Entrada", 'producto_id': movimiento.producto_id})
     
     producto = db.query(models.Producto).filter(
         models.Producto.id == movimiento.producto_id).first()
@@ -65,7 +66,8 @@ def create_movimiento_entrada_sql(movimiento: schemas.MovimientoCreate, db: Sess
     
     # Obtener el movimiento recién creado para devolverlo
     nuevo_movimiento = db.query(models.Movimiento).filter(
-        models.Movimiento.fecha == fecha_actual,
+        models.Movimiento.fecha == fecha_actual.date(),
+        models.Movimiento.hora == fecha_actual.time(),
         models.Movimiento.cantidad == movimiento.cantidad,
         models.Movimiento.tipo == "Entrada",
         models.Movimiento.producto_id == movimiento.producto_id
@@ -74,6 +76,7 @@ def create_movimiento_entrada_sql(movimiento: schemas.MovimientoCreate, db: Sess
     return schemas.Movimiento(
         id=nuevo_movimiento.id,
         fecha=nuevo_movimiento.fecha,
+        hora = nuevo_movimiento.hora,
         cantidad=nuevo_movimiento.cantidad,
         tipo=nuevo_movimiento.tipo,
         producto_id=nuevo_movimiento.producto_id
@@ -84,8 +87,9 @@ def create_movimiento_entrada_sql(movimiento: schemas.MovimientoCreate, db: Sess
 def create_movimiento_salida(movimiento: schemas.MovimientoCreate, db: Session = Depends(get_db)):
     fecha_actual = datetime.now()
     db_movimiento = models.Movimiento(
-        fecha=fecha_actual,
+        fecha=fecha_actual.date(),
         cantidad=movimiento.cantidad,
+        hora=fecha_actual.time(),
         tipo="Salida",
         producto_id=movimiento.producto_id
     )
@@ -104,8 +108,8 @@ def create_movimiento_salida(movimiento: schemas.MovimientoCreate, db: Session =
 @app.post("/movimientos/salida/sql/", response_model=schemas.Movimiento)
 def create_movimiento_salida_sql(movimiento: schemas.MovimientoCreate, db: Session = Depends(get_db)):
     fecha_actual = datetime.now()
-    sql = text("INSERT INTO movimientos (fecha, cantidad, tipo, producto_id) VALUES (:fecha, :cantidad, :tipo, :producto_id)")
-    db.execute(sql, {'fecha': fecha_actual, 'cantidad': movimiento.cantidad, 'tipo': "Salida", 'producto_id': movimiento.producto_id})
+    sql = text("INSERT INTO movimientos (fecha, hora, cantidad, tipo, producto_id) VALUES (:fecha, :hora, :cantidad, :tipo, :producto_id)")
+    db.execute(sql, {'fecha': fecha_actual.date().isoformat(), 'hora': fecha_actual.time().isoformat(),'cantidad': movimiento.cantidad, 'tipo': "Salida", 'producto_id': movimiento.producto_id})
     
     producto = db.query(models.Producto).filter(
         models.Producto.id == movimiento.producto_id).first()
@@ -118,7 +122,8 @@ def create_movimiento_salida_sql(movimiento: schemas.MovimientoCreate, db: Sessi
     
     # Obtener el movimiento recién creado para devolverlo
     nuevo_movimiento = db.query(models.Movimiento).filter(
-        models.Movimiento.fecha == fecha_actual,
+        models.Movimiento.fecha == fecha_actual.date(),
+        models.Movimiento.hora == fecha_actual.time(),
         models.Movimiento.cantidad == movimiento.cantidad,
         models.Movimiento.tipo == "Salida",
         models.Movimiento.producto_id == movimiento.producto_id
@@ -127,6 +132,7 @@ def create_movimiento_salida_sql(movimiento: schemas.MovimientoCreate, db: Sessi
     return schemas.Movimiento(
         id=nuevo_movimiento.id,
         fecha=nuevo_movimiento.fecha,
+        hora=nuevo_movimiento.hora,
         cantidad=nuevo_movimiento.cantidad,
         tipo=nuevo_movimiento.tipo,
         producto_id=nuevo_movimiento.producto_id
