@@ -1,6 +1,6 @@
 Label,# Samples,Average,Min,Max,Std. Dev.,Error %,Throughput,Received KB/sec,Sent KB/sec,Avg. Bytes
-HTTP Request ORM Create Product ,10,7,4,22,5.05,0.000%,.91903,0.20,0.22,223.3
-HTTP Request ORM Movimientos Entrada,1000,6,4,19,1.29,0.000%,85.20065,19.08,21.64,229.3
-HTTP Request ORM Movimientos Salida,500,5,5,10,0.98,0.000%,43.58818,9.77,11.11,229.5
-Verificar cantidades productos ORM,1,3,3,3,0.00,0.000%,333.33333,367.84,60.87,1130.0
-TOTAL,1511,6,3,22,1.28,0.000%,123.87277,27.81,31.48,229.9
+HTTP Request ORM Create Product ,10,19,9,86,22.32,0.000%,.14681,0.03,0.03,202.2
+HTTP Request ORM Movimientos Entrada,1000,20,13,210,12.14,0.000%,13.49837,3.04,3.43,230.3
+HTTP Request ORM Movimientos Salida,500,22,13,214,20.47,0.000%,6.66587,1.49,1.70,229.5
+Verificar cantidades productos ORM,1,7,7,7,0.00,0.000%,142.85714,127.37,26.09,913.0
+TOTAL,1511,21,7,214,15.49,0.000%,19.55582,4.40,4.97,230.3

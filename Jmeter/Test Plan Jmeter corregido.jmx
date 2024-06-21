@@ -6,6 +6,7 @@
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
         <collectionProp name="Arguments.arguments"/>
       </elementProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
     </TestPlan>
     <hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group ORM">
@@ -106,7 +107,7 @@
           </collectionProp>
         </HeaderManager>
         <hashTree/>
-        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Agregar 10 productos ORM">
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Agregar 10 productos ORM" enabled="true">
           <stringProp name="LoopController.loops">10</stringProp>
         </LoopController>
         <hashTree>
@@ -123,7 +124,7 @@
                 <elementProp name="" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.value">{&#xd;
-  &quot;nombre&quot;: &quot;producto ORM ${contador_productos_orm}&quot;&#xd;
+  &quot;nombre&quot;: &quot;producto ${contador_productos_orm} - ORM&quot;&#xd;
 }</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
@@ -141,7 +142,7 @@ vars.put(&quot;contador_productos_orm&quot;, String.valueOf(counter));</stringPr
             </BeanShellPreProcessor>
             <hashTree/>
           </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Agregar para cada producto 100 movimientos de entrada ORM">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Agregar para cada producto 100 movimientos de entrada ORM" enabled="true">
             <stringProp name="LoopController.loops">100</stringProp>
           </LoopController>
           <hashTree>
@@ -168,7 +169,7 @@ vars.put(&quot;contador_productos_orm&quot;, String.valueOf(counter));</stringPr
             </HTTPSamplerProxy>
             <hashTree/>
           </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Agregar para cada producto 50 movimientos de salida ORM">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Agregar para cada producto 50 movimientos de salida ORM" enabled="true">
             <stringProp name="LoopController.loops">50</stringProp>
           </LoopController>
           <hashTree>
@@ -221,7 +222,7 @@ vars.put(&quot;contador_productos_orm&quot;, String.valueOf(counter));</stringPr
         </HTTPSamplerProxy>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group SQL Nativo">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group SQL Nativo" enabled="true">
         <intProp name="ThreadGroup.num_threads">1</intProp>
         <intProp name="ThreadGroup.ramp_time">1</intProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
@@ -232,7 +233,7 @@ vars.put(&quot;contador_productos_orm&quot;, String.valueOf(counter));</stringPr
         </elementProp>
       </ThreadGroup>
       <hashTree>
-        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
           <objProp>
             <name>saveConfig</name>
@@ -306,7 +307,7 @@ vars.put(&quot;contador_productos_orm&quot;, String.valueOf(counter));</stringPr
           <stringProp name="filename">C:\Users\maria\OneDrive\Escritorio\inventario_api\Jmeter\summary_report_sql.xml</stringProp>
         </ResultCollector>
         <hashTree/>
-        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
           <collectionProp name="HeaderManager.headers">
             <elementProp name="" elementType="Header">
               <stringProp name="Header.name">Content-Type</stringProp>
@@ -336,7 +337,7 @@ vars.put(&quot;contador_productos_orm&quot;, String.valueOf(counter));</stringPr
                 <elementProp name="" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.value">{&#xd;
-  &quot;nombre&quot;: &quot;producto SQL ${contador_productos_sql}&quot;&#xd;
+  &quot;nombre&quot;: &quot;producto ${contador_productos_sql} - SQL}&quot;&#xd;
 }</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
@@ -344,7 +345,7 @@ vars.put(&quot;contador_productos_orm&quot;, String.valueOf(counter));</stringPr
             </elementProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor">
+            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
               <stringProp name="filename"></stringProp>
               <stringProp name="parameters"></stringProp>
               <boolProp name="resetInterpreter">false</boolProp>
@@ -354,11 +355,11 @@ vars.put(&quot;contador_productos_sql&quot;, String.valueOf(counter));</stringPr
             </BeanShellPreProcessor>
             <hashTree/>
           </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Agregar para cada producto 100 movimientos de entrada SQL">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Agregar para cada producto 100 movimientos de entrada SQL" enabled="true">
             <stringProp name="LoopController.loops">100</stringProp>
           </LoopController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request SQL Movimientos Entrada">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request SQL Movimientos Entrada" enabled="true">
               <stringProp name="HTTPSampler.domain">127.0.0.1</stringProp>
               <stringProp name="HTTPSampler.port">8000</stringProp>
               <stringProp name="HTTPSampler.path">/movimientos/entrada/sql/</stringProp>
@@ -381,11 +382,11 @@ vars.put(&quot;contador_productos_sql&quot;, String.valueOf(counter));</stringPr
             </HTTPSamplerProxy>
             <hashTree/>
           </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Agregar para cada producto 50 movimientos de salida SQL">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Agregar para cada producto 50 movimientos de salida SQL" enabled="true">
             <stringProp name="LoopController.loops">50</stringProp>
           </LoopController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request SQL Movimientos Salida">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request SQL Movimientos Salida" enabled="true">
               <stringProp name="HTTPSampler.domain">127.0.0.1</stringProp>
               <stringProp name="HTTPSampler.port">8000</stringProp>
               <stringProp name="HTTPSampler.path">/movimientos/salida/sql/</stringProp>
@@ -409,7 +410,7 @@ vars.put(&quot;contador_productos_sql&quot;, String.valueOf(counter));</stringPr
             </HTTPSamplerProxy>
             <hashTree/>
           </hashTree>
-          <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables SQL">
+          <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables SQL" enabled="true">
             <collectionProp name="Arguments.arguments">
               <elementProp name="contador_productos_sql" elementType="Argument">
                 <stringProp name="Argument.name">contador_productos_sql</stringProp>
@@ -420,7 +421,7 @@ vars.put(&quot;contador_productos_sql&quot;, String.valueOf(counter));</stringPr
           </Arguments>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Verificar cantidades productos SQL">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Verificar cantidades productos SQL" enabled="true">
           <stringProp name="HTTPSampler.domain">127.0.0.1</stringProp>
           <stringProp name="HTTPSampler.port">8000</stringProp>
           <stringProp name="HTTPSampler.path">/productos/</stringProp>
