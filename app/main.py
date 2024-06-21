@@ -161,8 +161,8 @@ def create_movimiento_salida_sql(movimiento: schemas.MovimientoCreate, db: Sessi
 
 
 @app.get("/productos/", response_model=List[schemas.Producto])
-def read_productos(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    productos = db.query(models.Producto).offset(skip).limit(limit).all()
+def read_productos(db: Session = Depends(get_db)):
+    productos = db.query(models.Producto).all()
     return productos
 
 

@@ -1,0 +1,6 @@
+Label,# Samples,Average,Min,Max,Std. Dev.,Error %,Throughput,Received KB/sec,Sent KB/sec,Avg. Bytes
+HTTP Request SQL Create Product ,10,6,4,8,1.10,0.000%,.54747,0.13,0.14,245.0
+HTTP Request SQL Movimientos Entrada,1000,6,5,17,1.56,0.000%,51.44033,11.65,13.31,232.0
+HTTP Request SQL Movimientos Salida,500,6,5,15,1.43,0.000%,25.71091,5.80,6.68,231.0
+Verificar cantidades productos SQL,1,3,3,3,0.00,0.000%,333.33333,761.72,60.87,2340.0
+TOTAL,1511,6,3,17,1.52,0.000%,74.07952,16.87,19.19,233.2
