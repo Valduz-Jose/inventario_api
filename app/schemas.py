@@ -1,22 +1,6 @@
-from datetime import datetime, date, time
+from datetime import date, time
 from pydantic import BaseModel
-
-
-class ProductoBase(BaseModel):
-    nombre: str
-
-
-class ProductoCreate(ProductoBase):
-    pass
-
-
-class Producto(ProductoBase):
-    id: int
-    cantidad: float
-    ultimo_movimiento: datetime
-
-    class Config:
-        from_attributes = True
+from typing import Optional
 
 
 class MovimientoBase(BaseModel):
@@ -33,6 +17,22 @@ class Movimiento(MovimientoBase):
     fecha: date
     hora: time
     tipo: str
+
+    class Config:
+        from_attributes = True
+
+class ProductoBase(BaseModel):
+    nombre: str
+
+
+class ProductoCreate(ProductoBase):
+    pass
+
+
+class Producto(ProductoBase):
+    id: int
+    cantidad: float
+    ultimo_movimiento_id: Optional[int|Movimiento]
 
     class Config:
         from_attributes = True
